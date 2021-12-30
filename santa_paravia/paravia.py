@@ -808,18 +808,17 @@ def play_game(my_players: List[Player], num_of_players: int) -> None:
     # winning_player: Optional[Player] = None
     baron = Player(1400, 6, 4, "Peppone", True)
 
-    while not all_dead and not winner:
+    while all_dead is False and winner is False:
         for my_player in my_players:
-            if not my_player.is_dead:
+            if my_player.is_dead is False:
                 new_turn(my_player, num_of_players, my_players, baron)
-        all_dead = not any(
-            all_dead and my_player.is_dead is False for my_player in my_players
-        )
+
+        all_dead = all(my_player.is_dead for my_player in my_players)
+
         for my_player in my_players:
             if my_player.i_won:
                 winner = True
                 winning_player: Player = my_player
-                break
 
     if all_dead:
         print("The game has ended.")
