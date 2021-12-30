@@ -114,7 +114,9 @@ def _print_instructions():
     print("of the area in the wall grows as you buy more land. The")
     print("size of the guard tower in the upper left corner shows")
     print("the adequacy of your defenses. If it shrinks, equip more")
-    print("soldiers! If the horse and plowman is touching the top of the wall,")
+    print(
+        "soldiers! If the horse and plowman is touching the top of the wall,"
+    )
     print("all your land is in production. Otherwise you need more")
     print("serfs, who will migrate to your state if you distribute")
     print("more grain than the minimum demand. If you distribute less")
@@ -128,7 +130,9 @@ def generate_harvest(me: Player) -> None:
     # TODO: this should be a Player class method.
     me.harvest = (randint(0, 5) + randint(0, 6)) // 2
     me.rats = randint(0, 50)
-    me.grain_reserve = ((me.grain_reserve * 100) - (me.grain_reserve * me.rats)) // 100
+    me.grain_reserve = (
+        (me.grain_reserve * 100) - (me.grain_reserve * me.rats)
+    ) // 100
 
 
 def new_land_and_grain_prices(me: Player) -> None:
@@ -266,7 +270,9 @@ def buy_sell_grain(me: Player) -> None:
             f"{me.land_price:.2f}",
             f"{me.treasury}",
         )
-        table.add_row("steres", "steres", "1000 st.", "hectare", "gold florins")
+        table.add_row(
+            "steres", "steres", "1000 st.", "hectare", "gold florins"
+        )
         console = Console()
         console.print(table)
 
@@ -394,7 +400,9 @@ def release_grain(me: Player) -> int:
             me.clergy += 2
 
     if me.justice > 2:  # line 706
-        me.justice_revenue = int(me.serfs / 100 * (me.justice - 2) * (me.justice - 2))
+        me.justice_revenue = int(
+            me.serfs / 100 * (me.justice - 2) * (me.justice - 2)
+        )
         me.justice_revenue = randint(0, me.justice_revenue)
         me.serfs -= me.justice_revenue
         me.feeling_serfs = me.justice_revenue
@@ -478,7 +486,9 @@ def generate_income(me: Player) -> None:
         + me.merchants * 20 * y
         + me.public_works * 100.0
     )
-    me.customs_duty_revenue = int(me.customs_duty / 100.0 * customs_duty_revenue)
+    me.customs_duty_revenue = int(
+        me.customs_duty / 100.0 * customs_duty_revenue
+    )
 
     me.sales_tax_revenue = int(
         (me.nobles * 50 + me.merchants * 25 + int(me.public_works * 10))
@@ -489,7 +499,11 @@ def generate_income(me: Player) -> None:
     )
 
     me.income_tax_revenue = int(
-        (me.nobles * 250 + me.public_works * 20.0 + 10 * me.justice * me.nobles * y)
+        (
+            me.nobles * 250
+            + me.public_works * 20.0
+            + 10 * me.justice * me.nobles * y
+        )
         * me.income_tax
         / 100
     )
@@ -512,7 +526,9 @@ def generate_income(me: Player) -> None:
         f"{me.income_tax_revenue}",
         f"{string}",
     )
-    table.add_row(f"({me.customs_duty}%)", f"({me.sales_tax}%)", f"({me.income_tax}%)")
+    table.add_row(
+        f"({me.customs_duty}%)", f"({me.sales_tax}%)", f"({me.income_tax}%)"
+    )
     console = Console()
     console.print(table)
 
@@ -664,17 +680,23 @@ def show_stats(my_players: List[Player], how_many: int) -> None:
     input("\n(Press ENTER): ")
 
 
-def state_purchases(me: Player, how_many: int, my_players: List[Player]) -> None:
+def state_purchases(
+    me: Player, how_many: int, my_players: List[Player]
+) -> None:
     val: int = 1
     read_input: str = "\0"
 
     while val != 0 or read_input[0] not in ("q"):
         print(f"{me.title} {me.name}")
         table = Table(title="State purchases", box=None)
-        table.add_row("1.", f"Marketplace ({me.market_places})", "1000 florins")
+        table.add_row(
+            "1.", f"Marketplace ({me.market_places})", "1000 florins"
+        )
         table.add_row("2.", f"Woolen mill ({me.mills})", "2000 florins")
         table.add_row("3.", f"Palace (partial) ({me.palace})", "3000 florins")
-        table.add_row("4.", f"Cathedral (partial) ({me.cathedral})", "5000 florins")
+        table.add_row(
+            "4.", f"Cathedral (partial) ({me.cathedral})", "5000 florins"
+        )
         console = Console()
         console.print(table)
         print(f"\nYou have {me.treasury} gold florins.")
@@ -742,7 +764,10 @@ def check_new_title(me: Player) -> bool:
     if me.title_num > me.old_title:
         me.old_title = me.title_num
         __change_title(me)
-        print(f"\aGood news! {me.name} had achieved the rank of {me.title}", end="\n\n")
+        print(
+            f"\aGood news! {me.name} had achieved the rank of {me.title}",
+            end="\n\n",
+        )
         return True
     else:
         me.title_num = me.old_title
@@ -783,7 +808,10 @@ def new_turn(
 
     if me.invade_me:
         for idx in range(how_many):
-            if idx != me.which_player and my_players[idx].soldiers > me.soldiers * 2.4:
+            if (
+                idx != me.which_player
+                and my_players[idx].soldiers > me.soldiers * 2.4
+            ):
                 attack_neighbour(my_players[idx], me)
                 break
         else:
