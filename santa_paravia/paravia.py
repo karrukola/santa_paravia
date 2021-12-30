@@ -819,6 +819,7 @@ def play_game(my_players: List[Player], num_of_players: int) -> None:
             if my_player.i_won:
                 winner = True
                 winning_player: Player = my_player
+                break
 
     if all_dead:
         print("The game has ended.")
