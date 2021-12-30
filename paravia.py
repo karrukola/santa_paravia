@@ -9,7 +9,7 @@ from rich.traceback import install
 
 install(show_locals=True)
 
-RAND_MAX = NotImplementedError
+RAND_MAX = 32767  # https://en.cppreference.com/w/cpp/numeric/random/RAND_MAX
 
 CITIES_LIST = [
     "Santa Paravia",
