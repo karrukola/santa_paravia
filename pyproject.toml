@@ -28,6 +28,7 @@
             "commitizen",
             "flake8",
             "flake8-bugbear",
+            "isort",
             "mypy",
             "pylint",
         ]
