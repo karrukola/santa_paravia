@@ -835,29 +835,21 @@ def new_turn(
 
 def play_game(my_players: List[Player], num_of_players: int) -> None:
     all_dead: bool = False
-    winner: bool = False
-    # winning_player: Optional[Player] = None
     baron = Player(1400, 6, 4, "Peppone", True)
 
-    while all_dead is False and winner is False:
+    while all_dead is False:
         for my_player in my_players:
-            if my_player.is_dead is False:
-                new_turn(my_player, num_of_players, my_players, baron)
-
-        all_dead = all(my_player.is_dead for my_player in my_players)
-
-        for my_player in my_players:
+            if my_player.is_dead:
+                continue
+            new_turn(my_player, num_of_players, my_players, baron)
             if my_player.i_won:
-                winner = True
-                winning_player: Player = my_player
-                break
+                print(f"Game Over. {my_player.title} {my_player.name} wins.")
+                return
+        all_dead = all(my_player.is_dead for my_player in my_players)
 
     if all_dead:
         print("The game has ended.")
         return
-
-    print(f"Game Over. {winning_player.title} {winning_player.name} wins.")
-    return
 
 
 def __input_str(input_prompt: str) -> str:
