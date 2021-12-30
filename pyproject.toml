@@ -35,3 +35,6 @@
         test = [
             "pytest",
         ]
+
+    [project.scripts]
+        santa_paravia = "santa_paravia.paravia:main"
