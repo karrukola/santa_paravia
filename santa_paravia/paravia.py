@@ -697,6 +697,9 @@ def state_purchases(
         table.add_row(
             "4.", f"Cathedral (partial) ({me.cathedral})", "5000 florins"
         )
+        table.add_row(
+            "5.", "Equip one platoon of serfs as soldiers", "500 florins"
+        )
         console = Console()
         console.print(table)
         print(f"\nYou have {me.treasury} gold florins.")
