@@ -703,7 +703,7 @@ def state_purchases(me: Player, how_many: int, my_players: List[Player]) -> None
 
 def __limit10(num: int, denom: int) -> int:
     val = num // denom
-    return max(val, 10)
+    return min(val, 10)
 
 
 def __change_title(me: Player) -> None:
