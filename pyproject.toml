@@ -30,6 +30,7 @@
             "flake8-bugbear",
             "isort",
             "mypy",
+            "pre-commit",
             "pylint",
         ]
         doc = ["sphinx"]
@@ -39,3 +40,12 @@
 
     [project.scripts]
         santa_paravia = "santa_paravia.paravia:main"
+
+[tool]
+    [tool.commitizen]
+        annotated_tag            = true
+        name                     = "cz_conventional_commits"
+        tag_format               = "v$version"
+        update_changelog_on_bump = true
+        version                  = "0.0.1"
+        version_files            = ["santa_paravia/__init__.py:__version__"]
