@@ -350,7 +350,6 @@ def release_grain(me: Player) -> int:
     # line 652
     if how_much < me.grain_demand - 1:
         x = (me.grain_demand - how_much) / me.grain_demand * 100.0 - 9.0
-        # FIXME: not sure how to enfore double precision in Python
         xp = x
         x = min(x, 65.0)
         if x < 0.0:
