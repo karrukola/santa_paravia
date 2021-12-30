@@ -1,3 +1,9 @@
+## v0.2.0 (2021-12-30)
+
+### Feat
+
+- **paravia.py**: end the game as soon as somebody wins
+
 ## v0.1.1 (2021-12-28)
 
 ### Fix

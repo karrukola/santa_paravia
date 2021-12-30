@@ -62,7 +62,6 @@ class Player:
         self.harvest: int = 0
         self.income_tax: int = 5
         self.income_tax_revenue: int = 0  # not in original constructor
-        self.invade_me: bool = False  # not in original constructor
         self.is_bankrupt: bool = False
         self.is_dead: bool = False
         self.i_won: bool = False
@@ -343,7 +342,6 @@ def release_grain(me: Player) -> int:
     me.dead_serfs = 0
     me.transplanted_serfs = 0
     me.feeling_serfs = 9
-    me.invade_me = False
     me.grain_reserve -= how_much
 
     z: float = how_much / me.grain_demand - 1.0
@@ -426,14 +424,6 @@ def release_grain(me: Player) -> int:
     print(f"You paid your soldiers {me.soldier_pay} florins.")
     print(f"You have {me.serfs} serfs in your city.")
     input("(Press ENTER): ")
-
-    if me.land // 1000 > me.soldiers:
-        me.invade_me = True
-        return 3
-
-    if me.land // 500 > me.soldiers:
-        me.invade_me = True
-        return 3
 
     return 0
 
@@ -800,26 +790,41 @@ def im_dead(me: Player) -> None:
     input("(Press ENTER): ")
 
 
-def new_turn(
-    me: Player, how_many: int, my_players: List[Player], baron: Player
+def _harvest_phase(
+    cur_player: Player,
+    my_players: List[Player],
+    baron: Player,
+    year: int,
 ) -> None:
+    generate_harvest(cur_player)
+    new_land_and_grain_prices(cur_player)
+    buy_sell_grain(cur_player)
+    release_grain(cur_player)
 
-    generate_harvest(me)
-    new_land_and_grain_prices(me)
-    buy_sell_grain(me)
-    release_grain(me)
-
-    if me.invade_me:
-        for idx in range(how_many):
+    # should current player be invaded?
+    if (cur_player.land // 1000 > cur_player.soldiers) or (
+        cur_player.land // 500 > cur_player.soldiers
+    ):
+        for player in my_players:
             if (
-                idx != me.which_player
-                and my_players[idx].soldiers > me.soldiers * 2.4
+                player != cur_player
+                and player.soldiers > cur_player.soldiers * 2.4
             ):
-                attack_neighbour(my_players[idx], me)
+                attack_neighbour(player, cur_player)
                 break
         else:
-            attack_neighbour(baron, me)
+            attack_neighbour(baron, cur_player)
 
+
+def new_turn(
+    me: Player,
+    how_many: int,
+    my_players: List[Player],
+    baron: Player,
+    year: int,
+) -> None:
+
+    _harvest_phase(me, my_players, baron, year)
     adjust_tax(me)
     draw_map(me)
     state_purchases(me, how_many, my_players)
@@ -833,19 +838,22 @@ def new_turn(
         me.i_won = True
 
 
-def play_game(my_players: List[Player], num_of_players: int) -> None:
+def play_game(
+    my_players: List[Player], num_of_players: int, year: int
+) -> None:
     all_dead: bool = False
-    baron = Player(1400, 6, 4, "Peppone", True)
+    baron = Player(year, 6, 4, "Peppone", True)
 
     while all_dead is False:
         for my_player in my_players:
             if my_player.is_dead:
                 continue
-            new_turn(my_player, num_of_players, my_players, baron)
+            new_turn(my_player, num_of_players, my_players, baron, year)
             if my_player.i_won:
                 print(f"Game Over. {my_player.title} {my_player.name} wins.")
                 return
         all_dead = all(my_player.is_dead for my_player in my_players)
+        year += 1
 
     if all_dead:
         print("The game has ended.")
@@ -925,7 +933,7 @@ def main() -> None:
         my_players.append(Player(1400, idx, level, name, m_or_f))
 
     # enter the main game loop
-    play_game(my_players, num_of_players)
+    play_game(my_players, num_of_players, 1400)
 
 
 if __name__ == "__main__":
