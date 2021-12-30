@@ -502,11 +502,20 @@ def generate_income(me: Player) -> None:
         + me.justice_revenue
     )
     print(f"State revenues {revenues} gold florins.")
-    # TODO: use tabulation libraries
-    print("Customes Duty\tSales Tax\tIncome Tax\tJustice")
-    print(
-        f"{me.customs_duty_revenue}\t{me.sales_tax_revenue}\t{me.income_tax_revenue}\t{string}"  # noqa:E501
+    table = Table(title="Revenues")
+    table.add_column("Customes Duty")
+    table.add_column("Sales Tax")
+    table.add_column("Income Tax")
+    table.add_column("Justice")
+    table.add_row(
+        f"{me.customs_duty_revenue}",
+        f"{me.sales_tax_revenue}",
+        f"{me.income_tax_revenue}",
+        f"{string}",
     )
+    table.add_row(f"({me.customs_duty}%)", f"({me.sales_tax}%)", f"({me.income_tax}%)")
+    console = Console()
+    console.print(table)
 
 
 def add_revenue(me: Player) -> None:
@@ -548,8 +557,6 @@ def adjust_tax(me: Player) -> None:
     while val != 0 or usr_in[0] != "q":
         print(f"\n{me.title} {me.name}\n")
         generate_income(me)
-        # TODO: use tabulation libraries
-        print(f"({me.customs_duty})\t\t({me.sales_tax})\t\t({me.income_tax})")
         print()
         print("1. Customs Duty, 2. Sales Tax, 3. Wealth Tax, 4. Justice")
         usr_in = input("Enter tax number for changes, q to continue: ")
@@ -632,22 +639,28 @@ def buy_palace(me: Player) -> None:
 
 
 def show_stats(my_players: List[Player], how_many: int) -> None:
-    # FIXME: use table tools such as tabulate or rich
-    print("Nobles\tSoldiers\tClergy\tMerchants\tSerfs\tLand\tTreasury")
+    table = Table()
+    table.add_column()
+    table.add_column("Nobles")
+    table.add_column("Soldiers")
+    table.add_column("Clergy")
+    table.add_column("Merchants")
+    table.add_column("Serfs")
+    table.add_column("Land")
+    table.add_column("Treasury")
     for my_player in my_players:
-        print(
-            "\n%s %s\n%d\t%d\t\t%d\t%d\t\t%d\t%d\t%d\n",
-            my_player.title,
-            my_player.name,
-            my_player.nobles,
-            my_player.soldiers,
-            my_player.clergy,
-            my_player.merchants,
-            my_player.serfs,
-            my_player.land,
-            my_player.treasury,
+        table.add_row(
+            f"{my_player.title} {my_player.name}",
+            f"{my_player.nobles}",
+            f"{my_player.soldiers}",
+            f"{my_player.clergy}",
+            f"{my_player.merchants}",
+            f"{my_player.serfs}",
+            f"{my_player.land}",
+            f"{my_player.treasury}",
         )
-
+    console = Console()
+    console.print(table)
     input("\n(Press ENTER): ")
 
 
