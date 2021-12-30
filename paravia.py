@@ -561,7 +561,9 @@ def adjust_tax(me: Player) -> None:
         print("1. Customs Duty, 2. Sales Tax, 3. Wealth Tax, 4. Justice")
         usr_in = input("Enter tax number for changes, q to continue: ")
 
-        if "q" not in usr_in:
+        if "q" in usr_in:
+            val = 0
+        else:
             val = int(usr_in)
 
             if val == 1:
@@ -680,19 +682,24 @@ def state_purchases(me: Player, how_many: int, my_players: List[Player]) -> None
         print(f"\nYou have {me.treasury} gold florins.")
         print("\nTo continue, enter q. To compare standings, enter 6")
 
-        val = int(input("Your choice: "))
-        if val == 1:
-            buy_market(me)
-        elif val == 2:
-            buy_mill(me)
-        elif val == 3:
-            buy_palace(me)
-        elif val == 4:
-            buy_cathedral(me)
-        elif val == 5:
-            buy_soldiers(me)
-        elif val == 6:
-            show_stats(my_players, how_many)
+        read_input = input("Your choice: ")
+
+        if "q" in read_input:
+            val = 0
+        else:
+            val = int(read_input)
+            if val == 1:
+                buy_market(me)
+            elif val == 2:
+                buy_mill(me)
+            elif val == 3:
+                buy_palace(me)
+            elif val == 4:
+                buy_cathedral(me)
+            elif val == 5:
+                buy_soldiers(me)
+            elif val == 6:
+                show_stats(my_players, how_many)
 
     return
 
