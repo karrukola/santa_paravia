@@ -10,7 +10,6 @@
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3 :: Only",
         "Topic :: Games/Entertainment :: Turn Based Strategy",
-        "Private :: Do Not Upload",
     ]
     dynamic = ["version", "description"]
     license = { file = "LICENSE" }
