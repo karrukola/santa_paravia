@@ -3,8 +3,8 @@ from sys import exit as sysexit
 from typing import List
 
 from rich import print
-
-# from rich.table import Table
+from rich.console import Console
+from rich.table import Table
 from rich.traceback import install
 
 install(show_locals=True)
@@ -254,13 +254,24 @@ def buy_sell_grain(me: Player) -> None:
         print(f"Rats ate {me.rats}% of your grain resources.")
         print_grain(me)
         print(f"({me.rats_ate} steres)")
-        # TODO: use tabulation libraries
-        print("Grain\tGrain\tPrice of\tPrice of\tTreasury")
-        print("Reserve\tDemand\tGrain\t\tLand")
-        print(
-            f"{me.grain_reserve}\t{me.grain_demand}\t{me.grain_price}\t\t{me.land_price:.2f}\t\t{me.treasury}"  # noqa: E501
+
+        table = Table()
+        table.add_column("Grain Reserve")
+        table.add_column("Grain Demand")
+        table.add_column("Price of Grain")
+        table.add_column("Price of Land")
+        table.add_column("Treasury", justify="right")
+        table.add_row(
+            f"{me.grain_reserve}",
+            f"{me.grain_demand}",
+            f"{me.grain_price}",
+            f"{me.land_price:.2f}",
+            f"{me.treasury}",
         )
-        print("steres\tsteres\t1000 st.\thectare\t\tgold florins")
+        table.add_row("steres", "steres", "1000 st.", "hectare", "gold florins")
+        console = Console()
+        console.print(table)
+
         print(f"\nYou have {me.land} hectares of land.")
         print("\n1. Buy grain, 2. Sell grain, 3. Buy land, 4. Sell land")
         usr_input = input("(Enter q to continue): ")
