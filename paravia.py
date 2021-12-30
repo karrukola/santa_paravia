@@ -192,8 +192,9 @@ def print_grain(me: Player) -> None:
 
 def buy_grain(me: Player) -> None:
     # TODO: this should be a Player class method.
-    a = input("How much grain do you want to buy (0 to specifiy a total)? ")
-    how_much = int(a)
+    how_much = __input_int(
+        "How much grain do you want to buy (0 to specifiy a total)? "
+    )
 
     if how_much == 0:
         a = input("How much total grain do you wish? ")
@@ -211,8 +212,7 @@ def buy_grain(me: Player) -> None:
 def sell_grain(me: Player) -> None:
     # TODO: this should be a Player class method.
 
-    a = input("How much grain do you want to sell? ")
-    how_much = int(a)
+    how_much = __input_int("How much grain do you want to sell? ")
 
     if how_much > me.grain_reserve:
         print("You don't have it.")
@@ -225,8 +225,7 @@ def sell_grain(me: Player) -> None:
 def buy_land(me: Player) -> None:
     # TODO: this should be a Player class method.
 
-    a = input("How much land do you want to buy? ")
-    how_much = int(a)
+    how_much = __input_int("How much land do you want to buy? ")
 
     me.land += how_much
     me.treasury -= int(how_much * me.land_price)
@@ -235,8 +234,7 @@ def buy_land(me: Player) -> None:
 def sell_land(me: Player) -> None:
     # TODO: this should be a Player class method.
 
-    a = input("How much land do you want to sell? ")
-    how_much = int(a)
+    how_much = __input_int("How much land do you want to sell? ")
     if how_much > me.land - 5000:
         print("You can't sell that much.")
         return
@@ -274,7 +272,7 @@ def buy_sell_grain(me: Player) -> None:
 
         print(f"\nYou have {me.land} hectares of land.")
         print("\n1. Buy grain, 2. Sell grain, 3. Buy land, 4. Sell land")
-        usr_input = input("(Enter q to continue): ")
+        usr_input = __input_str("(Enter q to continue): ")
 
         if usr_input[0] == "q":
             finished = True
@@ -317,8 +315,8 @@ def release_grain(me: Player) -> int:
 
     while is_ok is False:
         print("How much grain will you release for consumption?")
-        how_much = int(
-            input(f"1 = Minimum ({minimum}), 2 = Maximum({maximum}), or enter a value:")
+        how_much = __input_int(
+            f"1 = Minimum ({minimum}), 2 = Maximum({maximum}), or enter a value: "
         )
         if how_much == 1:
             how_much = minimum
@@ -459,6 +457,7 @@ def generate_income(me: Player) -> None:
     # TODO: this should be a Player class method.
     me.justice_revenue = (me.justice * 300 - 500) * me.title_num
 
+    # TODO: make this a dictionary
     if me.justice == 1:
         string = "Very Fair"
     elif me.justice == 2:
@@ -559,33 +558,32 @@ def adjust_tax(me: Player) -> None:
         generate_income(me)
         print()
         print("1. Customs Duty, 2. Sales Tax, 3. Wealth Tax, 4. Justice")
-        usr_in = input("Enter tax number for changes, q to continue: ")
+        usr_in = __input_str("Enter tax number for changes, q to continue: ")
 
         if "q" in usr_in:
             val = 0
         else:
             val = int(usr_in)
 
+            # TODO: factorise
             if val == 1:
-                duty = int(input("New customs duty (0 to 100): "))
+                duty = __input_int("New customs duty (0 to 100): ")
                 duty = min(duty, 100)
                 duty = max(duty, 0)
                 me.customs_duty = duty
             elif val == 2:
-                duty = int(input("New sales tax (0 to 50): "))
+                duty = __input_int("New sales tax (0 to 50): ")
                 duty = min(duty, 50)
                 duty = max(duty, 0)
                 me.sales_tax = duty
             elif val == 3:
-                duty = int(input("New wealth tax (0 to 25): "))
+                duty = __input_int("New wealth tax (0 to 25): ")
                 duty = min(duty, 25)
                 duty = max(duty, 0)
                 me.income_tax = duty
             elif val == 4:
-                duty = int(
-                    input(
-                        "Justice: 1. Very fair, 2. Moderate, 3. Harsh, 4. Outrageous: "
-                    )
+                duty = __input_int(
+                    "Justice: 1. Very fair, 2. Moderate, 3. Harsh, 4. Outrageous: "
                 )
                 duty = min(duty, 4)
                 duty = max(duty, 1)
@@ -682,7 +680,7 @@ def state_purchases(me: Player, how_many: int, my_players: List[Player]) -> None
         print(f"\nYou have {me.treasury} gold florins.")
         print("\nTo continue, enter q. To compare standings, enter 6")
 
-        read_input = input("Your choice: ")
+        read_input = __input_str("Your choice: ")
 
         if "q" in read_input:
             val = 0
@@ -833,17 +831,54 @@ def play_game(my_players: List[Player], num_of_players: int) -> None:
     return
 
 
+def __input_str(input_prompt: str) -> str:
+    """Safely read the user input as a string.
+
+    This function ensures that the string is not empty; in case the request is
+    re-prompted.
+
+    :param input_prompt: the message to be prompted to the user
+    :type input_prompt: str
+    :return: the non-empty string given by the user
+    :rtype: str
+    """
+    a = ""  # evaluates to False
+    # TODO: consider walrus oparator
+    while not a:
+        a = input(input_prompt)
+    return a
+
+
+def __input_int(input_prompt: str) -> int:
+    """Safely read the user input as an integer.
+
+    This function ensures that the user input is a meaningful integer.
+
+    :param input_prompt: the message to be prompted to the user
+    :type input_prompt: str
+    :return: the number input by the user
+    :rtype: int
+    """
+    in_ok = False
+    while not in_ok:
+        try:
+            a = int(__input_str(input_prompt))
+            in_ok = True
+        except ValueError:
+            in_ok = False
+    return a
+
+
 def main() -> None:
     print("Santa Paravia and Fiumaccio")
 
-    # FIXME: index out of range when simply pressed enter
     # instructions
-    show_instr = input("Do you wish instrunctionsn (Y or N)? ")
+    show_instr = __input_str("Do you wish instrunctionsn (Y or N)? ")
     if show_instr[0] in ["y", "Y"]:
         _print_instructions()
 
     # number of players
-    num_of_players = int(input("How many people want to play (1 to 6)? "))
+    num_of_players = __input_int("How many people want to play (1 to 6)? ")
     if num_of_players < 1 or num_of_players > 6:
         print("Thanks for playing.")
         sysexit()
@@ -857,14 +892,14 @@ def main() -> None:
 4. Grand Master"""
     )
 
-    level = int(input("Choose: "))
+    level = __input_int("Choose: ")
     level = max(level, 1)
     level = min(level, 4)
 
     my_players: List[Player] = []
     for idx in range(num_of_players):
-        name = input(f"Who is the ruler of {CITIES_LIST[idx]}? ").strip()
-        gender = input(f"Is {name} a man or a woman? (M or F)? ")
+        name = __input_str(f"Who is the ruler of {CITIES_LIST[idx]}? ").strip()
+        gender = __input_str(f"Is {name} a man or a woman? (M or F)? ")
         m_or_f = gender[0] in ("m", "M")
         my_players.append(Player(1400, idx, level, name, m_or_f))
 
