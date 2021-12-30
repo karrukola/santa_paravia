@@ -669,17 +669,16 @@ def state_purchases(me: Player, how_many: int, my_players: List[Player]) -> None
     read_input: str = "\0"
 
     while val != 0 or read_input[0] not in ("q"):
-        print("\n\n")
-        print(f"{me.title} {me.name}\nState purchases.")
-        print()  # extra line
-        print(f"1. Marketplace ({me.market_places})\t\t\t\t1000 florins")
-        print(f"2. Woolen mill ({me.mills})\t\t\t\t2000 florins")
-        print(f"3. Palace (partial) ({me.palace})\t\t\t\t3000 florins")
-        print(f"4. Cathedral (partial) ({me.cathedral})\t\t\t5000 florins")
-        print("5. Equip one platoon of serfs as soldiers\t500 florins")
+        print(f"{me.title} {me.name}")
+        table = Table(title="State purchases", box=None)
+        table.add_row("1.", f"Marketplace ({me.market_places})", "1000 florins")
+        table.add_row("2.", f"Woolen mill ({me.mills})", "2000 florins")
+        table.add_row("3.", f"Palace (partial) ({me.palace})", "3000 florins")
+        table.add_row("4.", f"Cathedral (partial) ({me.cathedral})", "5000 florins")
+        console = Console()
+        console.print(table)
         print(f"\nYou have {me.treasury} gold florins.")
         print("\nTo continue, enter q. To compare standings, enter 6")
-
         read_input = __input_str("Your choice: ")
 
         if "q" in read_input:
