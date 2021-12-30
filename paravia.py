@@ -702,8 +702,7 @@ def state_purchases(me: Player, how_many: int, my_players: List[Player]) -> None
 
 
 def __limit10(num: int, denom: int) -> int:
-    val = num // denom
-    return min(val, 10)
+    return min(num // denom, 10)
 
 
 def __change_title(me: Player) -> None:
@@ -745,8 +744,8 @@ def check_new_title(me: Player) -> bool:
         __change_title(me)
         print(f"\aGood news! {me.name} had achieved the rank of {me.title}", end="\n\n")
         return True
-
-    me.title_num = me.old_title
+    else:
+        me.title_num = me.old_title
     return False
 
 
