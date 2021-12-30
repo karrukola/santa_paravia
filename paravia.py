@@ -228,7 +228,6 @@ def buy_land(me: Player) -> None:
     a = input("How much land do you want to buy? ")
     how_much = int(a)
 
-    # FIXME: is it OK that treasury can go below 0?
     me.land += how_much
     me.treasury -= int(how_much * me.land_price)
 
