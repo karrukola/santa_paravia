@@ -46,5 +46,5 @@
         name                     = "cz_conventional_commits"
         tag_format               = "v$version"
         update_changelog_on_bump = true
-        version                  = "0.1.0"
+        version = "0.1.1"
         version_files            = ["santa_paravia/__init__.py:__version__"]

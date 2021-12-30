@@ -1,3 +1,9 @@
+## v0.1.1 (2021-12-28)
+
+### Fix
+
+- **paravia.py**: include option to buy soldiers in public works phase
+
 ## v0.1.0 (2021-12-27)
 
 ### Fix
