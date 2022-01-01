@@ -694,24 +694,31 @@ def state_purchases(
         console.print(table)
         print(f"\nYou have {me.treasury} gold florins.")
         print("\nTo continue, enter q. To compare standings, enter 6")
-        read_input = __input_str("Your choice: ")
 
-        if "q" in read_input:
-            val = 0
-        else:
-            val = int(read_input)
-            if val == 1:
-                buy_market(me)
-            elif val == 2:
-                buy_mill(me)
-            elif val == 3:
-                buy_palace(me)
-            elif val == 4:
-                buy_cathedral(me)
-            elif val == 5:
-                buy_soldiers(me)
-            elif val == 6:
-                show_stats(my_players, how_many)
+        good_input = False
+        while not good_input:
+            read_input = __input_str("Your choice: ")
+            if "q" in read_input:
+                val = 0
+            else:
+                try:
+                    val = int(read_input)
+                except ValueError:
+                    good_input = False
+                    continue
+                if val == 1:
+                    buy_market(me)
+                elif val == 2:
+                    buy_mill(me)
+                elif val == 3:
+                    buy_palace(me)
+                elif val == 4:
+                    buy_cathedral(me)
+                elif val == 5:
+                    buy_soldiers(me)
+                elif val == 6:
+                    show_stats(my_players, how_many)
+            good_input = True
 
     return
 
