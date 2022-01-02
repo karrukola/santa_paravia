@@ -98,6 +98,13 @@ class Player:
         self.year: int = year
         self.year_of_death: int = year + 20 + randint(0, 35)
 
+        if name == "Fil":
+            self.soldiers: int = 50
+            self.treasury: int = 25000
+        elif name == "Gym":
+            self.soldiers: int = 21
+            self.treasury: int = 25000
+
         # char City[15], Name[25], Title[15];
         # float PublicWorks, LandPrice;
         # boolean InvadeMe, IsBankrupt, IsDead, IWon, MaleOrFemale, NewTitle;

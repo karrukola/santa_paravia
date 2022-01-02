@@ -35,7 +35,9 @@ def test_player_is_invaded_by_baron_peppone():
     """If you have less than one soldier per 1000 hectares, you will be invaded."""
     under_attack = MinPlayer(10, 10001, 1, "sir", "player1", "city1")
     others = [MinPlayer(10, 500, 2, "duke", "player2", "city2")]
-    peppone = MinPlayer(25, 10000, 7, "baron", "peppone", "brescello")  # attacker
+    peppone = MinPlayer(
+        25, 10000, 7, "baron", "peppone", "brescello"
+    )  # attacker
 
     attacked_land_before = under_attack.land
     attacker_land_before = peppone.land
@@ -77,7 +79,9 @@ def test_player_is_not_invaded_by_npc():
     hectares, you are safe unless one of the other players has about 2 and a
     half times as many soldiers as you have."""
     under_attack = MinPlayer(10, 7500, 1, "sir", "player1", "city1")
-    others = [under_attack]  # needed because code always loops through all players
+    others = [
+        under_attack
+    ]  # needed because code always loops through all players
     peppone = MinPlayer(25, 10000, 7, "baron", "peppone", "brescello")
 
     attacked_land_before = under_attack.land
@@ -89,7 +93,9 @@ def test_player_is_not_invaded_by_npc():
 def test_player_is_not_invaded_by_baron_1000():
     """Exactly 1/1000"""
     under_attack = MinPlayer(10, 10000, 1, "sir", "player1", "city1")
-    others = [under_attack]  # needed because code always loops through all players
+    others = [
+        under_attack
+    ]  # needed because code always loops through all players
     peppone = MinPlayer(25, 10000, 7, "baron", "peppone", "brescello")
 
     attacked_land_before = under_attack.land

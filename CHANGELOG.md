@@ -1,3 +1,13 @@
+## v0.2.1 (2022-01-02)
+
+### Refactor
+
+- **paravia.py**: move logic to seize land to a dedicated use-case
+
+### Fix
+
+- **paravia.py**: handle exception in public works phase for when the user enters a string that is not 'q', nor a number
+
 ## v0.2.0 (2021-12-30)
 
 ### Feat
