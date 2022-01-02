@@ -428,26 +428,28 @@ def release_grain(me: Player) -> int:
     return 0
 
 
-def attack_neighbour(me: Player, him: Player) -> int:
-    if me.which_player == 7:
+def __attack_neighbour(invader: Player, attacked: Player) -> int:
+    if invader.which_player == 7:
         land_taken: int = randint(1000, 10000)
     else:
-        land_taken = me.soldiers * 1000 - (me.land // 3)
+        land_taken = invader.soldiers * 1000 - (invader.land // 3)
 
-    if land_taken > (him.land - 5000):
-        land_taken = (him.land - 5000) // 2
+    if land_taken > (attacked.land - 5000):
+        land_taken = (attacked.land - 5000) // 2
 
-    me.land += land_taken
-    him.land -= land_taken
+    invader.land += land_taken
+    attacked.land -= land_taken
 
     print(
-        f"\a\n{me.title} {me.name} of {me.city} invades and seizes {land_taken} hectares of land!"  # noqa E501
+        f"\a\n{invader.title} {invader.name} of {invader.city} invades and seizes {land_taken} hectares of land!"  # noqa E501
     )
 
     dead_soldiers: int = randint(0, 40)
-    dead_soldiers = min(dead_soldiers, him.soldiers - 15)
-    him.soldiers -= dead_soldiers
-    print(f"{him.title} {him.name} loses {dead_soldiers} soldiers in battle.")
+    dead_soldiers = min(dead_soldiers, attacked.soldiers - 15)
+    attacked.soldiers -= dead_soldiers
+    print(
+        f"{attacked.title} {attacked.name} loses {dead_soldiers} soldiers in battle."
+    )
     return land_taken
 
 
@@ -797,6 +799,38 @@ def im_dead(me: Player) -> None:
     input("(Press ENTER): ")
 
 
+def __eventually_invade(
+    cur_player: Player, my_players: List[Player], baron: Player
+) -> None:
+    """Invade player in case there are not enough soldiers to defend the land.
+
+    If you have at least one soldier per 500 hectares, you are safe.
+    If you have less than one soldier per 1000 hectares, you will be invaded.
+    If you have between one soldier per 500 hectares and one soldier per 1000
+    hectarees, you are safe unless one of the other players has about 2 and a
+    half times as many soldiers as you have.
+
+    :param cur_player: current player
+    :type cur_player: Player
+    :param my_players: all players
+    :type my_players: List[Player]
+    :param baron: Peppone
+    :type baron: Player
+    """
+    bare_force = cur_player.land / 1000  # you always get invaded
+    min_force = cur_player.land / 500  # you might get invaded
+
+    if cur_player.soldiers < min_force and cur_player.soldiers >= bare_force:
+        for player in my_players:
+            if player == cur_player:
+                continue
+            if player.soldiers > cur_player.soldiers * 2.4:
+                __attack_neighbour(player, cur_player)
+                break
+    elif cur_player.soldiers < bare_force:
+        __attack_neighbour(baron, cur_player)
+
+
 def _harvest_phase(
     cur_player: Player,
     my_players: List[Player],
@@ -808,19 +842,8 @@ def _harvest_phase(
     buy_sell_grain(cur_player)
     release_grain(cur_player)
 
-    # should current player be invaded?
-    if (cur_player.land // 1000 > cur_player.soldiers) or (
-        cur_player.land // 500 > cur_player.soldiers
-    ):
-        for player in my_players:
-            if (
-                player != cur_player
-                and player.soldiers > cur_player.soldiers * 2.4
-            ):
-                attack_neighbour(player, cur_player)
-                break
-        else:
-            attack_neighbour(baron, cur_player)
+    # does player have enough soldiers to defend her/his land?
+    __eventually_invade(cur_player, my_players, baron)
 
 
 def new_turn(
