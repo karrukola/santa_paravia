@@ -435,7 +435,7 @@ def __attack_neighbour(invader: Player, attacked: Player) -> int:
         land_taken = invader.soldiers * 1000 - (invader.land // 3)
 
     if land_taken > (attacked.land - 5000):
-        land_taken = (attacked.land - 5000) // 2
+        land_taken = int((attacked.land - 5000) / 2)
 
     invader.land += land_taken
     attacked.land -= land_taken
@@ -799,7 +799,7 @@ def im_dead(me: Player) -> None:
     input("(Press ENTER): ")
 
 
-def __eventually_invade(
+def _eventually_invade(
     cur_player: Player, my_players: List[Player], baron: Player
 ) -> None:
     """Invade player in case there are not enough soldiers to defend the land.
@@ -843,7 +843,7 @@ def _harvest_phase(
     release_grain(cur_player)
 
     # does player have enough soldiers to defend her/his land?
-    __eventually_invade(cur_player, my_players, baron)
+    _eventually_invade(cur_player, my_players, baron)
 
 
 def new_turn(
